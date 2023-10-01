@@ -9,9 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/next-js": "^2.1.5",
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@heroicons/react": "^1.0.6",
+    "@maptiler/sdk": "^1.1.2",
+    "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.4",
+    "maplibre-gl": "^3.3.1",
+    "next": "latest",
     "react": "latest",
+    "react-date-range": "^1.4.0",
     "react-dom": "latest",
-    "next": "latest"
+    "react-icons": "^4.11.0",
+    "react-loading-skeleton": "^3.3.1",
+    "react-responsive": "^9.0.2",
+    "react-slick": "^0.29.0",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "eslint": "latest",
