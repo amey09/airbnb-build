@@ -1,22 +1,17 @@
-"use client";
-
 import { StarIcon } from "@chakra-ui/icons";
-import { Box, Text, Flex, Heading } from "@chakra-ui/react";
+import { Box, Text, Flex, Heading, Button, Spacer } from "@chakra-ui/react";
 import React from "react";
 import { AiFillHeart } from "react-icons/ai";
 import Image from "next/image";
 
-function ListingCard({
-  city,
-  country,
-  geolocation,
+const ListingCard = ({
   name,
   number_of_reviews,
   price,
   review_scores_rating,
   street,
-  thumbnail_url,
-}) {
+  setLocation,
+}) => {
   return (
     <Flex
       cursor="pointer"
@@ -88,15 +83,37 @@ function ListingCard({
             {number_of_reviews} reviews
           </Box>
         </Box>
-        <Flex gap={"0.5rem"} marginTop={"auto"} color="gray.600">
+        <Flex
+          gap={"0.5rem"}
+          marginTop={"auto"}
+          color="gray.600"
+          alignItems={"center"}
+          justifyContent="flex-end"
+        >
           <Box fontSize="sm">${price}</Box>
           <Box textAlign={"center"} fontSize="sm">
             / Night
           </Box>
+          <Spacer />
+          <Button
+            type="submit"
+            onClick={setLocation}
+            colorScheme="orange"
+            display={{ base: "none", sm: "none", md: "flex" }}
+          >
+            View Location
+          </Button>
+          <Button
+            type="submit"
+            colorScheme="orange"
+            display={{ base: "flex", sm: "flex", md: "none" }}
+          >
+            Share
+          </Button>
         </Flex>
       </Flex>
     </Flex>
   );
-}
+};
 
 export default ListingCard;

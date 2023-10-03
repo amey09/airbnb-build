@@ -2,6 +2,7 @@
 const nextConfig = {
   experimental: {
     serverActions: true,
+    serverActionsBodySizeLimit: "2mb",
   },
   images: {
     remotePatterns: [
@@ -16,8 +17,8 @@ const nextConfig = {
     ],
   },
   env: {
-    mapbox_key: 'I5mSIlQy0fC4xXT45cP2'
-  }
+    mapbox_key: "I5mSIlQy0fC4xXT45cP2",
+  },
 };
 
 module.exports = nextConfig;

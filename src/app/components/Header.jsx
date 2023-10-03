@@ -27,9 +27,9 @@ function Header() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const location = searchParams.get("location");
-  const formatattedStartDate = format(new Date(startDate), "dd MMMM yy");
+  const formattedStartDate = format(new Date(startDate), "dd MMMM yy");
   const formattedEndDate = format(new Date(endDate), "dd MMMM yy");
-  const range = `${formatattedStartDate} - ${formattedEndDate}`;
+  const range = `${formattedStartDate} - ${formattedEndDate}`;
   const isMdScreen = useMediaQuery({ maxWidth: 768 });
   const isSmScreen = useMediaQuery({ maxWidth: 480 });
   const isBaseScreen = useMediaQuery({ maxWidth: 400 });
@@ -110,7 +110,7 @@ function Header() {
         height={"15svh"}
         backgroundColor={"black"}
         as="header"
-        zIndex={9999}
+        zIndex={800}
         templateColumns={"repeat(2, 1fr)"}
         gap={"2rem"}
       >
@@ -130,8 +130,8 @@ function Header() {
                 <Search2Icon onClick={search} cursor={"pointer"} />
               </InputRightElement>
               <Input
-                placeholder={`${location || "Location"} | ${
-                  range || "Select Dates"
+                placeholder={`${location || "Search"} | ${
+                  formattedStartDate || ""
                 }`}
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
@@ -158,10 +158,10 @@ function Header() {
         >
           {renderDateRange()}
           <Flex flexGrow={"auto"} gap="1.5rem">
-            <Button onClick={resetInput} textColor={"gray"} flexGrow={"1"}>
+            <Button onClick={resetInput} colorScheme="teal" flexGrow={"1"}>
               Cancel
             </Button>
-            <Button onClick={search} textColor={"red"} flexGrow={"1"}>
+            <Button onClick={search} colorScheme="teal" flexGrow={"1"}>
               Search
             </Button>
           </Flex>

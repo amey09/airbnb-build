@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { format } from "date-fns";
@@ -31,6 +30,10 @@ export default function Search() {
   const [cOrdinates, setcOrdinates] = useState([]);
   const [isAscending, setIsAscending] = useState(true);
   const [sortedListings, setSortedListings] = useState(listings);
+  const [currentCoOrdinate, setCurrentCoOrdinates] = useState({
+    lon: "",
+    lat: "",
+  });
 
   useEffect(() => {
     fetch(
@@ -39,13 +42,21 @@ export default function Search() {
       .then((res) => res.json())
       .then((data) => {
         const listingsData = data.results;
-        setListings(listingsData);
-        const geoLocationData = listingsData.map((listing, index) => ({
-          id: index + 1,
-          price: listing.price,
-          geoLocation: [listing.geolocation.lon, listing.geolocation.lat],
-        }));
-        setcOrdinates(geoLocationData);
+
+        if (listingsData && listingsData.length > 0) {
+          setListings(listingsData);
+          const geoLocationData = listingsData.map((listing, index) => ({
+            id: index + 1,
+            price: listing.price,
+            geoLocation: [listing.geolocation.lon, listing.geolocation.lat],
+          }));
+          setcOrdinates(geoLocationData);
+        } else {
+          console.log("No listings found for this location.");
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching data.");
       });
   }, [location]);
 
@@ -57,13 +68,24 @@ export default function Search() {
     setSortedListings(sorted);
     setIsAscending(newIsAscending);
   };
+
+  const handleSetLocation = (lon, lat) => {
+    setCurrentCoOrdinates((prev) => {
+      return {
+        ...prev,
+        lon,
+        lat,
+      };
+    });
+  };
+
   const listingsToDisplay =
     sortedListings.length > 0 ? sortedListings : listings;
 
   return (
     <Box maxHeight={"fit-content"}>
       <Flex as={"main"} gap={"2rem"} padding={{ "2xl": "0 20rem" }}>
-      <ScrollToTopButton />
+        <ScrollToTopButton />
         <Box
           as="section"
           padding={{
@@ -80,9 +102,10 @@ export default function Search() {
             alignItems={"left"}
             padding={{
               base: "0.5rem 1rem",
-              sm: "0rem 1rem",
-              xl: "0rem 0 0.5rem 1rem",
+              sm: "0rem 0 1rem 1rem",
+              xl: "0rem 0 1rem 1rem",
             }}
+            borderBottom={"3px solid teal"}
           >
             {location !== "Greece" && (
               <Text fontSize={"md"} fontStyle={"italic"} fontWeight={"500"}>
@@ -99,9 +122,17 @@ export default function Search() {
               gap={"1rem"}
               flexWrap={{ base: "wrap", sm: "wrap", md: "nowrap" }}
             >
-              <Button rounded={"full"}>Cancellation Flexibility</Button>
-              <Button rounded={"full"}>Type of Place</Button>
-              <Button onClick={toggleSortOrder} rounded={"full"}>
+              <Button colorScheme="teal" rounded={"full"}>
+                Cancellation Flexibility
+              </Button>
+              <Button colorScheme="teal" rounded={"full"}>
+                Type of Place
+              </Button>
+              <Button
+                colorScheme="teal"
+                onClick={toggleSortOrder}
+                rounded={"full"}
+              >
                 {isAscending ? "Low To High" : "High To Low"}
               </Button>
             </Flex>
@@ -117,6 +148,7 @@ export default function Search() {
                 width: "0",
               },
             }}
+            marginTop={"1rem"}
           >
             {listingsToDisplay.map(
               ({
@@ -141,6 +173,12 @@ export default function Search() {
                     review_scores_rating={review_scores_rating}
                     street={street}
                     thumbnail_url={thumbnail_url}
+                    toggleMap={() => {
+                      handleMapVisibility();
+                    }}
+                    setLocation={() => {
+                      handleSetLocation(geolocation.lon, geolocation.lat);
+                    }}
                   />
                 </GridItem>
               )
@@ -161,7 +199,7 @@ export default function Search() {
           gap={"1.5rem"}
           display={{ base: "none", sm: "none", md: "none", lg: "flex" }}
         >
-          <Map coordinates={cOrdinates} />
+          <Map coordinates={cOrdinates} location={currentCoOrdinate} />
           <Footer />
         </Box>
       </Flex>

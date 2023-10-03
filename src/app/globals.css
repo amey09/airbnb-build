@@ -35,30 +35,3 @@ body::-webkit-scrollbar-thumb {
     text-align: center;
     line-height: 50px;
 }
-
-.loader-line {
-    width: 200px;
-    height: 3px;
-    position: relative;
-    overflow: hidden;
-    background-color: #ddd;
-    margin: 100px auto;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-}
-
-.loader-line:before {
-    content: "";
-    position: absolute;
-    left: -50%;
-    height: 3px;
-    width: 40%;
-    background-color: coral;
-    -webkit-animation: lineAnim 1s linear infinite;
-    -moz-animation: lineAnim 1s linear infinite;
-    animation: lineAnim 1s linear infinite;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-}

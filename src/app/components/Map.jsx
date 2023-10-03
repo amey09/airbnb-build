@@ -2,19 +2,27 @@ import React, { useEffect } from "react";
 import * as maptilersdk from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 
-const Map = ({ coordinates }) => {
+maptilersdk.config.apiKey = process.env.mapbox_key;
+
+const Map = ({ coordinates, location }) => {
   useEffect(() => {
-    maptilersdk.config.apiKey = process.env.mapbox_key;
-    var map = new maptilersdk.Map({
+    const map = new maptilersdk.Map({
       container: "map",
       style: maptilersdk.MapStyle.STREETS,
-      center: [2.294694, 48.858093],
       zoom: 13,
     });
 
-    coordinates.forEach((coordinate, index) => {
+    const { lon: ActiveLongitude, lat: ActiveLatitude } = location;
+
+    coordinates.forEach((coordinate) => {
       const [lon, lat] = coordinate.geoLocation;
-      map.setCenter([lon, lat]);
+
+      if (!ActiveLongitude && !ActiveLatitude) {
+        map.setCenter([lon, lat]);
+      } else {
+        map.setCenter([ActiveLongitude, ActiveLatitude]);
+        map.setZoom(16);
+      }
 
       const marker = new maptilersdk.Marker().setLngLat([lon, lat]).addTo(map);
 
@@ -28,12 +36,12 @@ const Map = ({ coordinates }) => {
     });
 
     return () => map.remove();
-  }, [coordinates]);
+  }, [coordinates, location]);
 
   return (
     <div
       id="map"
-      style={{ position: "relative", width: "100%", height: "85vh" }}
+      style={{ position: "relative", width: "auto", height: "85vh" }}
     ></div>
   );
 };

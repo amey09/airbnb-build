@@ -18,7 +18,7 @@ const Footer = () => {
     );
   };
   return (
-    <Box dropShadow={"2xl"}>
+    <Box borderTop={"3px solid teal"} paddingTop={"1rem"}>
       <Container as={Stack} maxW={"6xl"}>
         <Grid
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 1fr 1fr" }}
